@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>{{data.name}}</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <main class="container">
+        <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative mt-5">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <a href="{{url_for('all_chars')}}" class="d-inline-block mb-2 text-primary">Indice</a>
+                    <h2 class="mb-0">{{data.name}}</h2>
+                    <div class="mb-1 text-muted">Created: {{data.created}}</div>
+                    <h6 class="card-text mb-auto">Species: </h6>
+                    <p>{{data.species}}</p>
+                    <h6 class="card-text mb-auto">Gender:</h6>
+                    <p>{{data.gender}}</p>
+                    <h6 class="card-text mb-auto">Origin: </h6>
+                    <p>{{data.origin.name}}</p>
+                    <h6 class="card-text mb-auto">Current Location: </h6>
+                    <p>{{data.location.name}}</p>
+                    <h6 class="card-text mb-auto">Status: </h6>
+                    <p>{{data.status}}</p>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="bd-placeholder-img" src="{{data.image}}" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <nav class="blog-pagination mt-5 mx-auto" aria-label="Pagination">
+                        <a class="btn btn-outline-success rounded-pill" href="{{url_for('one_char', id=data.id-1)}}" id="btn-ant">Previous</a>
+                        <a class="btn btn-outline-warning rounded-pill" href="{{url_for('del_char', id=data.id)}}" id="btn-del">Delete</a>
+                        <a class="btn btn-outline-success rounded-pill" href="{{url_for('one_char', id=data.id+1)}}" id="btn-dps">Next</a>
+                    </nav>
+                    <script>
+                        $(document).ready(function () {
+                            var id = {{ data.id }};
+                            var bt_ant = document.getElementById('btn-ant');
+                            var bt_dps = document.getElementById('btn-dps');
+                            if (id == 1) {
+                                bt_ant.classList.toggle("disabled");
+                            }
+                            if (id == 826) {
+                                bt_dps.classList.toggle("disabled");
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
