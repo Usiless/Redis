@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Characters</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+    </script>
+</head>
+<body>
+    <div class="col-lg-8 mx-auto p-3 py-md-5">
+        <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <td>GENDER</td>
+                    <th>ORIGIN</th>
+                    <th>SPECIES</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rows in resultados %}
+                <tr>
+                    <td>{{ rows.id }}</td>
+                    <td>
+                        <a href="{{url_for('one_char', id=rows.id)}}">
+                            <div style="height:100%;width:100%">
+                                {{ rows.name }}
+                            </div>
+                        </a>
+                    </td>
+                    <td>{{ rows.gender }}</td>
+                    <td>{{ rows.origin.name }}</td>
+                    <td>{{ rows.species }}</td>
+                    <td>{{ rows.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
