@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>{{data.name}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 </head>
 <body>
     <main class="container">
@@ -34,18 +36,39 @@
                         <a class="btn btn-outline-success rounded-pill" href="{{url_for('one_char', id=data.id+1)}}" id="btn-dps">Next</a>
                     </nav>
                     <script>
-                        $(document).ready(function () {
-                            var id = {{ data.id }};
-                            var bt_ant = document.getElementById('btn-ant');
-                            var bt_dps = document.getElementById('btn-dps');
-                            if (id == 1) {
-                                bt_ant.classList.toggle("disabled");
-                            }
-                            if (id == 826) {
-                                bt_dps.classList.toggle("disabled");
-                            }
-                        });
+                        $(document).ready(
+                            function () {
+                                var id = {{ data.id }};
+                                var bt_ant = document.getElementById('btn-ant');
+                                var bt_dps = document.getElementById('btn-dps');
+                                if (id == 1) {
+                                    bt_ant.classList.toggle("disabled");
+                                }
+                                if (id == 826) {
+                                    bt_dps.classList.toggle("disabled");
+                                }
+                                $('#table_id').DataTable();
+                            });
+
                     </script>
+                </div>
+                <div class="col-lg-12 mx-auto p-3">
+                    <table id="table_id" class="display">
+                        <thead>
+                            <tr>
+                                <th data-field="episode">
+                                    <span class="text-success">Episodes</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rows in data.episode %}
+                            <tr>
+                                <td>{{ rows }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

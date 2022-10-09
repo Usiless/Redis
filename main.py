@@ -7,25 +7,37 @@ redis_conn = get_redis_connection()
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return redirect('/characters')
+
+
 @app.route('/characters')
 def all_chars():
-    return all_chars_pags(1)
-
-@app.route('/characters/<page>')
-def all_chars_pags(page):
-    tabla = f'characters_pag_{page}'
+    tabla = f'characters'
     a = redis_conn.get(tabla)
     if a:
         print("Existen datos en caché")
-        return json.loads(a)
+        resultados = json.loads(a)
+        return render_template('all_characters.html', resultados=resultados)
+
     else:
         print("No existen datos en caché")
-        link = f"https://rickandmortyapi.com/api/character/?page={page}"
+        link = f"https://rickandmortyapi.com/api/character"
         x = requests.get(link)
-        print(x)
-        redis_conn.set(tabla, json.dumps(x.json(), separators=(',', ':')), ex=60)
-        return x.json()
-
+        y = x.json()
+        z = json.dumps(y.get('results'), separators=(',', ':'))
+        
+        for i in range(2,42):
+            link = f"https://rickandmortyapi.com/api/character/?page={i}"
+            x = requests.get(link)
+            y = x.json()
+            aux = json.dumps(y.get('results'), separators=(',', ':'))
+            z = z + aux
+        z = z.replace('][', ',')
+        redis_conn.set(tabla, z , ex=180)
+        resultados = json.loads(z)
+        return render_template('all_characters.html', resultados=resultados)
 
 @app.route('/character/<id>')
 def one_char(id):
@@ -37,20 +49,19 @@ def one_char(id):
         if a:
             print("Existen datos en caché")
             return render_template('character.html', data=json.loads(a))
-            #return json.loads(a)
+
         else:
             print("No existen datos en caché")
             x = requests.get(f"https://rickandmortyapi.com/api/character/{id}")
             redis_conn.set(tabla, json.dumps(x.json(), separators=(',', ':')))
             return render_template('character.html', data=x.json())
-            #return x.json()
 
 @app.route('/<id>')
 def del_char(id):
     print("Borrar")
     tabla = f'character_{id}'
     redis_conn.delete(tabla)
-    return redirect(url_for('all_chars'))
+    return redirect(url_for('index'))
 
 
 
