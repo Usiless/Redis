@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+    <!-- CSS only -->
+    <meta charset="UTF-8">
+    <title>{{data.name}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+</head>
+<body>
+    <main class="container">
+        <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative mt-5">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <a class="d-inline-block mb-2 text-primary" href="{{url_for('all_chars')}}">Índice</a>
+                    <h2 class="mb-0">{{data.name}}</h2>
+                    <div class="mb-1 text-muted">Created: {{data.created}}</div>
+                    <form action="/edit/{{data.id}}" method="post">
+                        <div class="form-group gap-2 p-1">
+                            <label>Species: </label>
+                            <input class="col-3" value="{{data.species}}" name="especie">
+                        </div>
+                        <div class="form-group gap-2 p-1">
+                            <label>Gender:</label>
+                            <input class="col-3" value="{{data.gender}}" name="genero">
+                        </div>
+                        <div class="form-group gap-2 p-1">
+                            <label>Origin: </label>
+                            <input class="col-3" value="{{data.origin.name}}" name="origen">
+                        </div>
+                        <div class="form-group gap-2 p-1">
+                            <label>Current Location: </label>
+                            <input class="col-3" value="{{data.location.name}}" name="lugar">
+                        </div>
+                        <div class="form-group gap-2 p-1">
+                            <label>Status: </label>
+                            <input class="col-3" value="{{data.status}}" name="estado">
+                        </div>
+                        <input class="btn btn-outline-success rounded-pill" type="submit" value="Save" />
+                        <button type="button" class="btn btn-primary" onclick="window.history.back();">Cancel</button>
+                    </form>
+                </div>
+                <div class="col-auto">
+                    <img class="bd-placeholder-img" src="{{data.image}}" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        $(document).ready(
+            function () {
+                var id = {{ data.id }};
+                var bt_ant = document.getElementById('btn-ant');
+                var bt_dps = document.getElementById('btn-dps');
+                if (id == 1) {
+                    bt_ant.classList.toggle("disabled");
+                }
+                if (id == 826) {
+                    bt_dps.classList.toggle("disabled");
+                }
+                $('#table_id').DataTable();
+            });
+    </script>
+</body>

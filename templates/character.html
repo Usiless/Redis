@@ -32,6 +32,7 @@
                     <img class="bd-placeholder-img" src="{{data.image}}" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                     <nav class="blog-pagination mt-5 mx-auto" aria-label="Pagination">
                         <a class="btn btn-outline-success rounded-pill" href="{{url_for('one_char', id=data.id-1)}}" id="btn-ant">Previous</a>
+                        <a class="btn btn-outline-primary rounded-pill" href="{{url_for('edit_char', id=data.id)}}" id="btn-del">Edit</a>
                         <a class="btn btn-outline-warning rounded-pill" href="{{url_for('del_char', id=data.id)}}" id="btn-del">Delete</a>
                         <a class="btn btn-outline-success rounded-pill" href="{{url_for('one_char', id=data.id+1)}}" id="btn-dps">Next</a>
                     </nav>
@@ -56,7 +57,7 @@
                     <table id="table_id" class="display">
                         <thead>
                             <tr>
-                                <th data-field="episode">
+                                <th>
                                     <span class="text-success">Episodes</span>
                                 </th>
                             </tr>

@@ -1,5 +1,5 @@
 ﻿import json
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 import requests
 from redis_om import get_redis_connection
 
@@ -53,16 +53,40 @@ def one_char(id):
         else:
             print("No existen datos en caché")
             x = requests.get(f"https://rickandmortyapi.com/api/character/{id}")
+            print(type(x))
             redis_conn.set(tabla, json.dumps(x.json(), separators=(',', ':')))
             return render_template('character.html', data=x.json())
 
-@app.route('/<id>')
+@app.route('/delete/<id>')
 def del_char(id):
     print("Borrar")
     tabla = f'character_{id}'
     redis_conn.delete(tabla)
     return redirect(url_for('index'))
 
+@app.route('/edit/<id>', methods = ['GET','POST'])
+def edit_char(id):
+    if request.method=="GET":
+        tabla = f'character_{id}'
+        a = redis_conn.get(tabla)
+        return render_template('character_edit.html', data=json.loads(a))
+    elif request.method=="POST":
+        especie = request.form['especie']
+        genero = request.form['genero']
+        origen = request.form['origen']
+        lugar = request.form['lugar']
+        estado = request.form['estado']
+        tabla = f'character_{id}'
+        a = redis_conn.get(tabla)
+        y = json.loads(a)
+        y['status'] = estado
+        y['species'] = especie
+        y['gender'] = genero
+        y['origin']['name'] = origen
+        y['location']['name'] = lugar
+        redis_conn.delete(tabla)
+        redis_conn.set(tabla, json.dumps(y, separators=(',', ':')))
+        return render_template('character.html', data=y)
 
 
 if __name__ == '__main__':
